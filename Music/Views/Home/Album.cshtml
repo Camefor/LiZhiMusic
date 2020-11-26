@@ -114,219 +114,209 @@
     });
     function change(type) {
         console.log(type);
-        player.destroy();
-        player = new skPlayer({
-            music: {
-                type: 'file',
-                //必需项,自配置文件方式指定填'file'
-                source: songList + type
-            }
-        });
-
-
-        //if (type === 1) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList+'1'
-        //        }
-        //    })
-        //} if (type === 2) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList2
-        //        }
-        //    })
-        //}
-        //if (type === 3) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList3
-        //        }
-        //    })
-        //}
-        //if (type === 4) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList4
-        //        }
-        //    })
-        //}
-        //if (type === 5) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList5
-        //        }
-        //    })
-        //}
-        //if (type === 6) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList6
-        //        }
-        //    })
-        //}
-        //if (type === 7) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList7
-        //        }
-        //    })
-        //} if (type === 8) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList8
-        //        }
-        //    })
-        //} if (type === 9) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList9
-        //        }
-        //    })
-        //} if (type === 10) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList10
-        //        }
-        //    })
-        //} if (type === 11) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList11
-        //        }
-        //    })
-        //} if (type === 12) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList12
-        //        }
-        //    })
-        //} if (type === 13) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList13
-        //        }
-        //    })
-        //} if (type === 14) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList14
-        //        }
-        //    })
-        //} if (type === 15) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList15
-        //        }
-        //    })
-        //} if (type === 16) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList16
-        //        }
-        //    })
-        //} if (type === 17) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList17
-        //        }
-        //    })
-        //} if (type === 18) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList18
-        //        }
-        //    })
-        //} if (type === 19) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList19
-        //        }
-        //    })
-        //} if (type === 20) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList20
-        //        }
-        //    })
-        //} if (type === 21) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList21
-        //        }
-        //    })
-        //} if (type === 22) {
-        //    player.destroy();
-        //    player = new skPlayer({
-        //        music: {
-        //            type: 'file',
-        //            //必需项,自配置文件方式指定填'file'
-        //            source: songList22
-        //        }
-        //    })
-        //}
+        if (type === 1) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList+'1'
+                }
+            })
+        } if (type === 2) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList2
+                }
+            })
+        }
+        if (type === 3) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList3
+                }
+            })
+        }
+        if (type === 4) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList4
+                }
+            })
+        }
+        if (type === 5) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList5
+                }
+            })
+        }
+        if (type === 6) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList6
+                }
+            })
+        }
+        if (type === 7) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList7
+                }
+            })
+        } if (type === 8) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList8
+                }
+            })
+        } if (type === 9) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList9
+                }
+            })
+        } if (type === 10) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList10
+                }
+            })
+        } if (type === 11) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList11
+                }
+            })
+        } if (type === 12) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList12
+                }
+            })
+        } if (type === 13) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList13
+                }
+            })
+        } if (type === 14) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList14
+                }
+            })
+        } if (type === 15) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList15
+                }
+            })
+        } if (type === 16) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList16
+                }
+            })
+        } if (type === 17) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList17
+                }
+            })
+        } if (type === 18) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList18
+                }
+            })
+        } if (type === 19) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList19
+                }
+            })
+        } if (type === 20) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList20
+                }
+            })
+        } if (type === 21) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList21
+                }
+            })
+        } if (type === 22) {
+            player.destroy();
+            player = new skPlayer({
+                music: {
+                    type: 'file',
+                    //必需项,自配置文件方式指定填'file'
+                    source: songList22
+                }
+            })
+        }
     }
 </script>
