@@ -19,10 +19,54 @@ namespace Music.Controllers {
         public IActionResult Index() {
             List<SourceModel> sourceModels = new List<SourceModel>();
             SourceModel sourceModel = new SourceModel();
-            string path = @"E:\love";
-            return View(GetDirectory(path));
+            return View();
         }
-        public static List<FileInfoModel> GetDirectory(string srcPath) {
+
+        [HttpGet]
+        public JsonResult Love() {
+            return Json(GetSourceList());
+        }
+
+        private static List<FileInfoModel> GetFilesInfo(string srcPath = @"E:\love") {
+            DirectoryInfo dir = new DirectoryInfo(srcPath);
+            var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
+            List<FileInfoModel> fileInfoModels = new List<FileInfoModel>();
+            foreach (FileInfo i in fileinfos) {
+                fileInfoModels.Add(new FileInfoModel {
+                    Name = i.Name,
+                    FullName = "./" + i.Name,
+                    MB = GetMB(Convert.ToDouble(i.Length)),
+                    CreationTime = i.CreationTime,
+                    LastAccessTime = i.LastAccessTime
+                });
+            }
+            //var res = JsonSerializer.Serialize(fileInfoModels);
+            return fileInfoModels;
+        }
+
+        private static List<SourceModel> GetSourceList(string srcPath = @"E:\love") {
+            DirectoryInfo dir = new DirectoryInfo(srcPath);
+            var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
+            List<SourceModel> fileInfoModels = new List<SourceModel>();
+            foreach (FileInfo i in fileinfos) {
+                fileInfoModels.Add(new SourceModel {
+                    name = i.Name,
+                    author = "李志",
+                    cover = "https://2019334.xyz/share/cover/1.jpg",
+                    //src = "./" + i.Name
+                    src = "https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3"
+                });
+            }
+            //var res = JsonSerializer.Serialize(fileInfoModels);
+            return fileInfoModels;
+        }
+
+        /// <summary>
+        /// 获取所有的专辑封面
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <returns></returns>
+        private static List<FileInfoModel> GetCover(string srcPath = @"E:\cover") {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
             var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
             List<FileInfoModel> fileInfoModels = new List<FileInfoModel>();
@@ -39,11 +83,6 @@ namespace Music.Controllers {
             return fileInfoModels;
         }
 
-        /// <summary>
-        /// 将B转换为MB
-        /// </summary>
-        /// <param name="b"></param>
-        /// <returns></returns>
         private static string GetMB(double size) {
             String[] units = new String[] { "B", "KB", "MB", "GB", "TB", "PB" };
             double mod = 1024.0;
