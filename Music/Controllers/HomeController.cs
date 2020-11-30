@@ -8,23 +8,36 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Text.Json;
+using Microsoft.AspNetCore.Hosting;
+using System.Web;
+
 namespace Music.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
+        private readonly IWebHostEnvironment _hostEnvironment;
 
-        public HomeController(ILogger<HomeController> logger) {
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment environment) {
             _logger = logger;
+            _hostEnvironment = environment;
         }
 
+
         public IActionResult Index() {
+            _logger.LogWarning("haha");
             List<SourceModel> sourceModels = new List<SourceModel>();
             SourceModel sourceModel = new SourceModel();
             return View();
         }
 
+        public void WriteLog() {
+            var p = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "love");
+
+        }
+
         [HttpGet]
         public JsonResult Love() {
-            return Json(GetSourceList());
+            var path = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "love");
+            return Json(GetSourceList(path));
         }
 
         private static List<FileInfoModel> GetFilesInfo(string srcPath = @"E:\love") {
@@ -44,17 +57,19 @@ namespace Music.Controllers {
             return fileInfoModels;
         }
 
-        private static List<SourceModel> GetSourceList(string srcPath = @"E:\love") {
+        private static List<SourceModel> GetSourceList(string srcPath) {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
             var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
             List<SourceModel> fileInfoModels = new List<SourceModel>();
             foreach (FileInfo i in fileinfos) {
                 fileInfoModels.Add(new SourceModel {
+                    count = fileinfos.Length,
                     name = i.Name,
                     author = "李志",
                     cover = "https://2019334.xyz/share/cover/1.jpg",
-                    //src = "./" + i.Name
-                    src = "https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3"
+                    src = "./love/" + i.Name
+                    //src = "./love/" + HttpUtility.UrlEncode(i.Name)
+                    //src = "https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3"
                 });
             }
             //var res = JsonSerializer.Serialize(fileInfoModels);

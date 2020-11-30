@@ -4,6 +4,12 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+
+    #skPlayer {
+        height: 100%
+    }
+</style>
 <script src="~/skplayer/dist/skPlayer.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 
@@ -14,30 +20,17 @@
     });
 
 </script>
+<div class="pure-menu custom-restricted-width">
+    <span class="pure-menu-heading">俺喜欢的 <span id="lovecount"></span> </span>
+    <ul id="myul" class="pure-menu-list">
+    </ul>
+</div>
 <div id="skPlayer">
 
 
 
 </div>
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<br />
-<div class="pure-menu custom-restricted-width">
-    <span class="pure-menu-heading">俺喜欢的 </span>
-    <ul id="myul" class="pure-menu-list">
-    </ul>
-</div>
-<br />
-<br />
-<div class="pure-menu custom-restricted-width">
-    <br>
-</div>
+
 <script>
 
     let songList1 = [
@@ -55,6 +48,9 @@
         }, { name: '03阿兰', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/03阿兰.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '04离婚', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/04离婚.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '05欢愉', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/05欢愉.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '06卡夫卡', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/06卡夫卡.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '07被禁忌的游戏', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/07被禁忌的游戏.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '08罗庄的冬天', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/08罗庄的冬天.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '09红色气球', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/09红色气球.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },]
 
     var player = new skPlayer({
+        autoplay: true,
+        //可选项,自动播放,默认为false,true/false
+        listshow: true,
         //可选项配置同上
         music: {
             //必需项,音乐配置
@@ -64,6 +60,11 @@
                 //必需项,音乐文件数组
                 songList1
         }
+    });
+    //http://www.chengfeilong.com/skPlayer/
+    player.switchMode(function () {
+        console.log('switchMode');
+
     });
 
 
@@ -84,12 +85,12 @@
                 console.log(data);
                 lst = data;
                 ChageSource(data)
-
-                for (var i = 0; i < data.length; i++) {
-                    $('#myul').append(
-                        '<li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="change(22)">' + data[i].name + '</a></li>'
-                    );
-                }
+                $('#lovecount').text('共' + data[0].count + '首');
+                //for (var i = 0; i < data.length; i++) {
+                //    $('#myul').append(
+                //        '<li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="change(22)">' + data[i].name + '</a></li>'
+                //    );
+                //}
             },
             error: function (errorMsg) {
                 // 请求失败

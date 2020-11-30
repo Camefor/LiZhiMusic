@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -28,7 +31,19 @@ namespace Music {
             } else {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            var provider = new FileExtensionContentTypeProvider();
+
+            provider.Mappings[".flac"] = "audio/mpeg";
+            provider.Mappings[".mp3"] = "audio/mpeg";
+            provider.Mappings[".ico"] = "image/x-icon";
+
             app.UseStaticFiles();
+            app.UseStaticFiles(new StaticFileOptions { 
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath,"love")),
+                RequestPath = "/love",
+                ContentTypeProvider = provider
+            });
 
             app.UseRouting();
 

@@ -24,6 +24,7 @@ namespace Music.Models {
         /// 封面图片
         /// </summary>
         public string cover { get; set; }
+        public int count { get; set; }
     }
 
     public class FileInfoModel {
