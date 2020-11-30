@@ -1,7 +1,5 @@
-﻿@model List<FileInfoModel>
-@using System.Text.Json
-@{
-    ViewData["Title"] = "Home Page";
+﻿@{
+    ViewData["Title"] = "B哥";
 }
 
 <style>
@@ -27,10 +25,11 @@
 </div>
 <div id="skPlayer">
 
-
+   
 
 </div>
-
+ <button>上一首</button>
+    <button>下一首</button>
 <script>
 
     let songList1 = [
@@ -62,10 +61,7 @@
         }
     });
     //http://www.chengfeilong.com/skPlayer/
-    player.switchMode(function () {
-        console.log('switchMode');
-
-    });
+   
 
 
     function change(type) {
@@ -113,5 +109,14 @@
                     objArr
             }
         });
+        player.switchMode(function () {
+            console.log('switchMode');
+        });
+       
+    }
+
+
+    function switchMusic(index) {
+        console.log('switchMusic');
     }
 </script>
