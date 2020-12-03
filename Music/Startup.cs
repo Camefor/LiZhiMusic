@@ -35,6 +35,7 @@ namespace Music {
             var provider = new FileExtensionContentTypeProvider();
 
             provider.Mappings[".flac"] = "audio/mpeg";
+            provider.Mappings[".lrc"] = "text/plain";
             provider.Mappings[".mp3"] = "audio/mpeg";
             provider.Mappings[".ico"] = "image/x-icon";
 

@@ -3,18 +3,79 @@
 }
 
 <style>
-
-    #skPlayer {
-        height: 100%
+    body {
+        font-family: '微软雅黑';
+        background-color: #F0F0F0;
     }
+
+    #main {
+        margin: 40px auto;
+        /*width: 300px;*/
+        border: 1px solid #D6D6D6;
+        background-color: #FFFFFF;
+        border-radius: 3px;
+        box-shadow: 0 0 2px 1px #797979;
+    }
+
+    /* audio {
+        width: 100%;
+    }*/
+
+    #lyric {
+        height: 295px;
+        overflow: hidden;
+    }
+
+    ul {
+        position: relative;
+        top: 40px;
+        list-style: none;
+        padding: 0;
+        -webkit-transition: top .4s;
+        -o-transition: top .4s;
+        transition: top .4s;
+    }
+
+    li {
+        text-align: center;
+        font-size: 13px;
+        line-height: 26px;
+        transition: all .5s;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+        li.active {
+            font-weight: bold;
+            font-size: 16px;
+            color: #89391F;
+        }
+
+        li:empty {
+            height: 26px;
+        }
 </style>
 <script src="~/skplayer/dist/skPlayer.min.js"></script>
+@*<script src="~/skplayer/src/skPlayer.js"></script>*@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-
+<script src="~/lyric/lyric.js"></script>
 <script>
 
     $(function () {
         getMyLove();
+
+        //var audio = $(".skPlayer-source");
+        ////document.querySelector('audio').loop = true;
+        ////document.querySelector('audio').controls = true;
+        ////document.querySelector('audio').autoplay = true;
+        //audio.loop = true;
+        //audio.autoplay = true;
+        //audio.controls = true;
+        //// loop controls autoplay
+
+        //$('.skPlayer').attr("controls", true);
+
     });
 
 </script>
@@ -23,13 +84,28 @@
     <ul id="myul" class="pure-menu-list">
     </ul>
 </div>
+
 <div id="skPlayer">
 
-   
-
 </div>
- <button>上一首</button>
-    <button>下一首</button>
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+<br />
+
+
+<div id="main">
+    @*<audio src="~/love/01. 李志 - 意味.flac" loop controls autoplay></audio>*@
+    <div id="lyric">
+        <ul id="lyricContainer"></ul>
+    </div>
+</div>
+
+
+
 <script>
 
     let songList1 = [
@@ -44,10 +120,18 @@
             author: '李志',
             src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/02青春.mp3',
             cover: 'https://2019334.xyz/share/cover/1.jpg'
-        }, { name: '03阿兰', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/03阿兰.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '04离婚', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/04离婚.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '05欢愉', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/05欢愉.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '06卡夫卡', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/06卡夫卡.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '07被禁忌的游戏', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/07被禁忌的游戏.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '08罗庄的冬天', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/08罗庄的冬天.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }, { name: '09红色气球', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/09红色气球.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },]
+        },
+        { name: '03阿兰', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/03阿兰.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '04离婚', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/04离婚.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '05欢愉', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/05欢愉.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '06卡夫卡', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/06卡夫卡.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '07被禁忌的游戏', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/07被禁忌的游戏.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '08罗庄的冬天', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/08罗庄的冬天.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '09红色气球', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/09红色气球.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }
+    ]
 
     var player = new skPlayer({
-        autoplay: true,
+        //autoplay: true,
         //可选项,自动播放,默认为false,true/false
         listshow: true,
         //可选项配置同上
@@ -61,7 +145,6 @@
         }
     });
     //http://www.chengfeilong.com/skPlayer/
-   
 
 
     function change(type) {
@@ -112,9 +195,18 @@
         player.switchMode(function () {
             console.log('switchMode');
         });
-       
-    }
 
+    }
+    var m = new MusicPlayer({
+        //lyric: "/lyric/res/pxyz.lrc", //歌词文件地址，UTF-8编码，在file协议下会取不到
+        lyric: "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc",
+        container: "#lyricContainer", //歌词渲染容器
+        audio: 'audio', //绑定到的音频元素 //使用skPlayer没问题
+        lyricChange: function (e) { //歌词状态改变时
+            console.log(e);
+            $('#lyricContainer').css('top', - e.target.position().top + 40);
+        }
+    });
 
     function switchMusic(index) {
         console.log('switchMusic');
