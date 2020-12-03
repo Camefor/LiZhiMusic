@@ -67,12 +67,12 @@ namespace Music.Controllers {
                     name = i.Name,
                     author = "李志",
                     cover = "https://2019334.xyz/share/cover/1.jpg",
-                    src = @"../love/" + i.Name
+                    src = @"../love/" + i.Name,
+                    lyric= "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc"
                     //src = "./love/" + HttpUtility.UrlEncode(i.Name)
                     //src = "https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3"
                 });
             }
-            //var res = JsonSerializer.Serialize(fileInfoModels);
             return fileInfoModels;
         }
 

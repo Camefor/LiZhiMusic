@@ -60,25 +60,94 @@
 @*<script src="~/skplayer/src/skPlayer.js"></script>*@
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lyric/lyric.js"></script>
+
+
 <script>
+    var allsong = [];
+    var alllyric = [];
+
 
     $(function () {
         getMyLove();
-
-        //var audio = $(".skPlayer-source");
-        ////document.querySelector('audio').loop = true;
-        ////document.querySelector('audio').controls = true;
-        ////document.querySelector('audio').autoplay = true;
-        //audio.loop = true;
-        //audio.autoplay = true;
-        //audio.controls = true;
-        //// loop controls autoplay
-
-        //$('.skPlayer').attr("controls", true);
-
     });
 
+    let songList1 = [
+        {
+            name: '01黑色信封',
+            author: '李志',
+            src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3',
+            cover: 'https://2019334.xyz/share/cover/1.jpg'
+        },
+        {
+            name: '02青春',
+            author: '李志',
+            src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/02青春.mp3',
+            cover: 'https://2019334.xyz/share/cover/1.jpg'
+        },
+        { name: '03阿兰', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/03阿兰.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '04离婚', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/04离婚.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '05欢愉', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/05欢愉.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '06卡夫卡', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/06卡夫卡.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '07被禁忌的游戏', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/07被禁忌的游戏.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '08罗庄的冬天', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/08罗庄的冬天.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
+        { name: '09红色气球', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/09红色气球.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }
+    ]
+
+    //http://www.chengfeilong.com/skPlayer/
+    var player;
+
+  
+    function getMyLove() {
+        let lst = [];
+        $.ajax({
+            type: "get", // 请求类型（get/post）
+            url: "/Home/Love",
+            async: true, // 是否异步
+            dataType: "json", // 设置数据类型
+            success: function (data) {
+                // 请求成功后的回调方法，进行数据赋值、显示等操作
+                console.log(data);
+                lst = data;
+
+                player = new skPlayer({
+                    autoplay: true,
+                    //可选项,自动播放,默认为false,true/false
+                    listshow: true,
+                    //可选项配置同上
+                    music: {
+                        //必需项,音乐配置
+                        type: 'file',
+                        //必需项,自配置文件方式指定填'file'
+                        source:
+                            //必需项,音乐文件数组
+                            data
+                    }
+                }); console.log()
+
+                //滚动歌词
+                var m = new MusicPlayer({
+                    //lyric: "/lyric/res/pxyz.lrc", //歌词文件地址，UTF-8编码，在file协议下会取不到
+                    //lyric: "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc",
+                    lyric: data.lyric,
+                    container: "#lyricContainer", //歌词渲染容器
+                    audio: 'audio', //绑定到的音频元素 //使用skPlayer没问题
+                    lyricChange: function (e) { //歌词状态改变时
+                        console.log(e);
+                        $('#lyricContainer').css('top', - e.target.position().top + 40);
+                    }
+                });
+                $('#lovecount').text('共' + data[0].count + '首');
+            },
+            error: function (errorMsg) {
+                alert("请求失败");
+            }
+        });
+    }
+
 </script>
+
+
+
 <div class="pure-menu custom-restricted-width">
     <span class="pure-menu-heading">俺喜欢的 <span id="lovecount"></span> </span>
     <ul id="myul" class="pure-menu-list">
@@ -106,109 +175,4 @@
 
 
 
-<script>
 
-    let songList1 = [
-        {
-            name: '01黑色信封',
-            author: '李志',
-            src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3',
-            cover: 'https://2019334.xyz/share/cover/1.jpg'
-        },
-        {
-            name: '02青春',
-            author: '李志',
-            src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/02青春.mp3',
-            cover: 'https://2019334.xyz/share/cover/1.jpg'
-        },
-        { name: '03阿兰', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/03阿兰.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
-        { name: '04离婚', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/04离婚.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
-        { name: '05欢愉', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/05欢愉.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
-        { name: '06卡夫卡', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/06卡夫卡.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
-        { name: '07被禁忌的游戏', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/07被禁忌的游戏.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
-        { name: '08罗庄的冬天', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/08罗庄的冬天.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' },
-        { name: '09红色气球', author: '李志', src: 'https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/09红色气球.mp3', cover: 'https://2019334.xyz/share/cover/1.jpg' }
-    ]
-
-    var player = new skPlayer({
-        //autoplay: true,
-        //可选项,自动播放,默认为false,true/false
-        listshow: true,
-        //可选项配置同上
-        music: {
-            //必需项,音乐配置
-            type: 'file',
-            //必需项,自配置文件方式指定填'file'
-            source:
-                //必需项,音乐文件数组
-                songList1
-        }
-    });
-    //http://www.chengfeilong.com/skPlayer/
-
-
-    function change(type) {
-        console.log(type)
-        player.destroy();
-    }
-
-    function getMyLove() {
-        let lst = [];
-        $.ajax({
-            type: "get", // 请求类型（get/post）
-            url: "/Home/Love",
-            async: true, // 是否异步
-            dataType: "json", // 设置数据类型
-            success: function (data) {
-                // 请求成功后的回调方法，进行数据赋值、显示等操作
-                console.log(data);
-                lst = data;
-                ChageSource(data)
-                $('#lovecount').text('共' + data[0].count + '首');
-                //for (var i = 0; i < data.length; i++) {
-                //    $('#myul').append(
-                //        '<li class="pure-menu-item"><a href="#" class="pure-menu-link" onclick="change(22)">' + data[i].name + '</a></li>'
-                //    );
-                //}
-            },
-            error: function (errorMsg) {
-                // 请求失败
-                alert("请求失败");
-            }
-        });
-    }
-
-
-    function ChageSource(objArr) {
-        player.destroy();
-        player = new skPlayer({
-            //可选项配置同上
-            music: {
-                //必需项,音乐配置
-                type: 'file',
-                //必需项,自配置文件方式指定填'file'
-                source:
-                    //必需项,音乐文件数组
-                    objArr
-            }
-        });
-        player.switchMode(function () {
-            console.log('switchMode');
-        });
-
-    }
-    var m = new MusicPlayer({
-        //lyric: "/lyric/res/pxyz.lrc", //歌词文件地址，UTF-8编码，在file协议下会取不到
-        lyric: "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc",
-        container: "#lyricContainer", //歌词渲染容器
-        audio: 'audio', //绑定到的音频元素 //使用skPlayer没问题
-        lyricChange: function (e) { //歌词状态改变时
-            console.log(e);
-            $('#lyricContainer').css('top', - e.target.position().top + 40);
-        }
-    });
-
-    function switchMusic(index) {
-        console.log('switchMusic');
-    }
-</script>

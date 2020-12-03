@@ -25,6 +25,11 @@ namespace Music.Models {
         /// </summary>
         public string cover { get; set; }
         public int count { get; set; }
+
+        /// <summary>
+        /// 歌词
+        /// </summary>
+        public string lyric { get; internal set; }
     }
 
     public class FileInfoModel {

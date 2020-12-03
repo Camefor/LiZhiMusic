@@ -81,6 +81,7 @@
 
         let musicDom = document.getElementsByTagName('audio')[0];//获取Audio的DOM节点
         console.info('get musicDom');
+        console.info(musicDom);
         musicDom.addEventListener("timeupdate", function () {//监听音频播放的实时时间事件
             console.info('enter timeupdate event');
 
