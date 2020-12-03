@@ -96,19 +96,14 @@
     //http://www.chengfeilong.com/skPlayer/
     var player;
 
-  
     function getMyLove() {
-        let lst = [];
         $.ajax({
-            type: "get", // 请求类型（get/post）
+            type: "get",
             url: "/Home/Love",
-            async: true, // 是否异步
-            dataType: "json", // 设置数据类型
+            async: true,
+            dataType: "json",
             success: function (data) {
-                // 请求成功后的回调方法，进行数据赋值、显示等操作
-                console.log(data);
-                lst = data;
-
+                allsong = data;
                 player = new skPlayer({
                     autoplay: true,
                     //可选项,自动播放,默认为false,true/false
@@ -122,20 +117,12 @@
                             //必需项,音乐文件数组
                             data
                     }
-                }); console.log()
-
-                //滚动歌词
-                var m = new MusicPlayer({
-                    //lyric: "/lyric/res/pxyz.lrc", //歌词文件地址，UTF-8编码，在file协议下会取不到
-                    //lyric: "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc",
-                    lyric: data.lyric,
-                    container: "#lyricContainer", //歌词渲染容器
-                    audio: 'audio', //绑定到的音频元素 //使用skPlayer没问题
-                    lyricChange: function (e) { //歌词状态改变时
-                        console.log(e);
-                        $('#lyricContainer').css('top', - e.target.position().top + 40);
-                    }
                 });
+
+
+               
+
+                console.log(m)
                 $('#lovecount').text('共' + data[0].count + '首');
             },
             error: function (errorMsg) {

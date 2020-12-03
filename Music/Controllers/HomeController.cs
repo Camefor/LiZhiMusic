@@ -61,14 +61,15 @@ namespace Music.Controllers {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
             var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
             List<SourceModel> fileInfoModels = new List<SourceModel>();
+            int count = 0;
             foreach (FileInfo i in fileinfos) {
                 fileInfoModels.Add(new SourceModel {
                     count = fileinfos.Length,
                     name = i.Name,
                     author = "李志",
-                    cover = "https://2019334.xyz/share/cover/1.jpg",
+                    cover = "https://2019334.xyz/share/cover/1.jpg",//后期动态更换专辑图片
                     src = @"../love/" + i.Name,
-                    lyric= "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc"
+                    lyric = "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc?t=" + count++.ToString()
                     //src = "./love/" + HttpUtility.UrlEncode(i.Name)
                     //src = "https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3"
                 });
