@@ -10,12 +10,18 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using Microsoft.AspNetCore.Hosting;
 using System.Web;
+using Music.Helper;
+using AngleSharp.Html.Parser;
+using System.Net.Http;
+using System.Net;
 
 namespace Music.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _hostEnvironment;
-
+        static HtmlParser htmlParser = new HtmlParser();
+        static readonly HttpClient client = new HttpClient();
+        static HttpWebRequest myReq;
         public HomeController(ILogger<HomeController> logger, IWebHostEnvironment environment) {
             _logger = logger;
             _hostEnvironment = environment;
@@ -37,7 +43,14 @@ namespace Music.Controllers {
         [HttpGet]
         public JsonResult Love() {
             var path = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "love");
-            return Json(GetSourceList(path));
+            var sourceModels = GetSourceList(path);
+            for (int i = 0; i < sourceModels.Count; i++) {
+
+            }
+
+            DownloadLyric();
+
+            return Json(sourceModels);
         }
 
         private static List<FileInfoModel> GetFilesInfo(string srcPath = @"E:\love") {
@@ -70,12 +83,36 @@ namespace Music.Controllers {
                     cover = "https://2019334.xyz/share/cover/1.jpg",//后期动态更换专辑图片
                     src = @"../love/" + i.Name,
                     lyric = "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc?t=" + count++.ToString()
-                    //src = "./love/" + HttpUtility.UrlEncode(i.Name)
-                    //src = "https://2019334.xyz/share/1.%20%E8%A2%AB%E7%A6%81%E5%BF%8C%E7%9A%84%E6%B8%B8%E6%88%8F%282004%29/01黑色信封.mp3"
                 });
             }
+
             return fileInfoModels;
         }
+
+
+        private static void DownloadLyric(string key = "") {
+
+            //保存所有歌词地址
+            var sourceHtmlDom = AnalyticalContent.GetHtml("https://www.mulanci.org/lyric/s4127/");
+            var dom = htmlParser.ParseDocument(sourceHtmlDom);
+            var textItems = dom.QuerySelectorAll("div.pt-1 a");//元素选择器 //pb-1
+            List<LyricUrlModel> lyricUrlModels = new List<LyricUrlModel>();
+            foreach (var item in textItems) {
+                var href = "https://www.mulanci.org/" + item.GetAttribute("href");
+                var text = AnalyticalContent.HtmlToPlainText(item.InnerHtml);
+                lyricUrlModels.Add(new LyricUrlModel {
+                    text = text,
+                    url = href
+                });
+                if (text.Contains(key)) {
+                    //haha
+                    var find = true;
+                }
+            }
+
+            var temp = lyricUrlModels.Where(x => x.text.Contains(key)).ToList();
+        }
+
 
         /// <summary>
         /// 获取所有的专辑封面
