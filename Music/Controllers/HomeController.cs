@@ -149,7 +149,7 @@ namespace Music.Controllers {
                     author = "李志",
                     cover = "https://2019334.xyz/share/cover/2.jpg",//后期动态更换专辑图片
                     src = @"../love/" + fileinfos[i].Name,
-                    lyric = "http://192.168.2.6:2333/content/temp/res/意味-李志.lrc?t=" + count++.ToString()
+                    lyric = findLrc.lyric
                 });
             }
 
