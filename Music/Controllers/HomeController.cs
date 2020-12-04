@@ -238,6 +238,7 @@ namespace Music.Controllers {
                 var t1 = text.Replace("<br>", "\r\n");
                 var sd = t1.IndexOf("<div");
                 res = t1.Substring(0, sd - 1);
+                res = res.Replace("        作词：李志", "作词：李志");
             }
             return res;
         }
