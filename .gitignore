@@ -339,3 +339,5 @@ ASALocalRun/
 # BeatPulse healthcheck temp database
 healthchecksdb
 /Music/wwwroot/love
+/Music/wwwroot/忽然.lrc
+*.lrc

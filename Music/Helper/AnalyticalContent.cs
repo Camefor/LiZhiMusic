@@ -9,22 +9,18 @@ using System.Text.RegularExpressions;
 namespace Music.Helper {
     public class AnalyticalContent {
 
-        static readonly HttpClient client = new HttpClient();
-
-
         static public string GetHtml(string url) {
             HttpWebRequest myReq =
             (HttpWebRequest)WebRequest.Create(url);
-            HttpWebResponse response = (HttpWebResponse)myReq.GetResponse();
-            // Get the stream associated with the response.
-            Stream receiveStream = response.GetResponseStream();
-            if (response.StatusCode == HttpStatusCode.OK) {
-                Console.WriteLine("获取Html成功");
+            using (HttpWebResponse response = (HttpWebResponse)myReq.GetResponse()) {
+                // Get the stream associated with the response.
+                using (Stream receiveStream = response.GetResponseStream()) {
+                    // Pipes the stream to a higher level stream reader with the required encoding format. 
+                    using (StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8)) {
+                        return readStream.ReadToEnd();
+                    }
+                }
             }
-            // Pipes the stream to a higher level stream reader with the required encoding format. 
-            StreamReader readStream = new StreamReader(receiveStream, Encoding.UTF8);
-
-            return readStream.ReadToEnd();
         }
 
 
@@ -54,23 +50,19 @@ namespace Music.Helper {
         /// <param name="imgUrl">图片url</param>
         /// <param name="fullPath">要保存的路径</param>
         public static void GetImgRes(string imgUrl, string fullPath) {
-            try {
-                HttpResponseMessage response = client.GetAsync(imgUrl).Result;
-                response.EnsureSuccessStatusCode();
-                var respnseBody = response.Content.ReadAsByteArrayAsync().Result;
-                using (var resStream = (response.Content.ReadAsStreamAsync().Result)) {
-                    if (System.IO.File.Exists(fullPath)) System.IO.File.Delete(fullPath);
-                    //https://blog.lindexi.com/post/C-dotnet-%E5%B0%86-Stream-%E4%BF%9D%E5%AD%98%E5%88%B0%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95.html
-                    using (var fileStream = File.Create(fullPath)) {
-                        resStream.Seek(0, SeekOrigin.Begin);
-                        resStream.CopyTo(fileStream);
+            using (HttpClient client = new HttpClient()) {
+                using (HttpResponseMessage response = client.GetAsync(imgUrl).Result) {
+                    response.EnsureSuccessStatusCode();
+                    var respnseBody = response.Content.ReadAsByteArrayAsync().Result;
+                    using (Stream resStream = (response.Content.ReadAsStreamAsync().Result)) {
+                        if (System.IO.File.Exists(fullPath)) System.IO.File.Delete(fullPath);
+                        //https://blog.lindexi.com/post/C-dotnet-%E5%B0%86-Stream-%E4%BF%9D%E5%AD%98%E5%88%B0%E6%96%87%E4%BB%B6%E7%9A%84%E6%96%B9%E6%B3%95.html
+                        using (var fileStream = File.Create(fullPath)) {
+                            resStream.Seek(0, SeekOrigin.Begin);
+                            resStream.CopyTo(fileStream);
+                        }
                     }
                 }
-
-                Console.WriteLine("任务结束，成功保存文件");
-                Console.WriteLine();
-            } catch (Exception ex) {
-                Console.WriteLine("保存文件错误" + ex.Message);
             }
         }
     }
