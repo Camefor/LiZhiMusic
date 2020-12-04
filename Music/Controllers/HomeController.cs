@@ -54,23 +54,30 @@ namespace Music.Controllers {
             return Json(sourceModels);
         }
 
-        private static List<FileInfoModel> GetFilesInfo(string srcPath = @"E:\love") {
+        /// <summary>
+        /// 获取物理磁盘上的歌词文件
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <returns></returns>
+        private static List<SourceModel> GetLrcFilesInfo(string srcPath) {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
-            var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
-            List<FileInfoModel> fileInfoModels = new List<FileInfoModel>();
-            foreach (FileInfo i in fileinfos) {
-                fileInfoModels.Add(new FileInfoModel {
-                    Name = i.Name,
-                    FullName = "./" + i.Name,
-                    MB = GetMB(Convert.ToDouble(i.Length)),
-                    CreationTime = i.CreationTime,
-                    LastAccessTime = i.LastAccessTime
+            var fileinfos = dir.GetFiles();
+            List<SourceModel> lrcSource = new List<SourceModel>();
+            for (int i = 0; i < fileinfos.Length; i++) {
+                lrcSource.Add(new SourceModel {
+                    name = fileinfos[i].Name.Split('.')[0],
+                    lyric = @"../love/" + fileinfos[i].Name,
                 });
             }
             //var res = JsonSerializer.Serialize(fileInfoModels);
-            return fileInfoModels;
+            return lrcSource;
         }
 
+        /// <summary>
+        /// 获取物理磁盘上的音频文件
+        /// </summary>
+        /// <param name="srcPath"></param>
+        /// <returns></returns>
         private static List<SourceModel> GetSourceList(string srcPath) {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
             var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
@@ -78,22 +85,11 @@ namespace Music.Controllers {
             int count = 0;
 
 
-            List<LyricUrlModel> lyricUrls = new List<LyricUrlModel>();
-
-            //考虑把歌词地址持久化 避免每次去请求
-            var _saveUrlPath = Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", @$"lyricUrls.json");
-            if (System.IO.File.Exists(_saveUrlPath)) {
-                string readText = System.IO.File.ReadAllText(_saveUrlPath);
-                //已经存在
-                lyricUrls = JsonSerializer.Deserialize<List<LyricUrlModel>>(readText);
-            } else {
-                //不存在 请求 并保存
-                lyricUrls = GetLyricUrls();
-                WriteContent(JsonSerializer.Serialize(lyricUrls), _saveUrlPath);//写入文件
-            }
 
 
             for (int i = 0; i < fileinfos.Length; i++) {
+
+
                 var songName = fileinfos[i].Name
                     .Trim()
                     .Replace("李志", "")
@@ -109,9 +105,20 @@ namespace Music.Controllers {
                 songName = Regex.Replace(songName, @"\（.*\）", "");//过滤{}｛｝
                 songName = Regex.Replace(songName.Replace("（", "(").Replace("）", ")"), @"\([^\(]*\)", "");
                 songName = Regex.Replace(songName, @"\d", "");
-                if (fileinfos[i].Name.Contains("离婚")) {
-                    var sd = "";
-                }
+
+
+                #region "下载歌词 已下载"
+                //List<LyricUrlModel> lyricUrls = new List<LyricUrlModel>();
+                ////考虑把歌词地址持久化 避免每次去请求
+                //var _saveUrlPath = Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", @$"lyricUrls.json");
+                //if (System.IO.File.Exists(_saveUrlPath)) {
+                //    //已经存在
+                //    lyricUrls = JsonSerializer.Deserialize<List<LyricUrlModel>>(System.IO.File.ReadAllText(_saveUrlPath));
+                //} else {
+                //    //不存在 请求 并保存
+                //    lyricUrls = GetLyricUrls();
+                //    WriteContent(JsonSerializer.Serialize(lyricUrls), _saveUrlPath);
+                //}
 
                 //拿到每首歌曲的歌词地址
                 //var _lyricUrl = string.Empty;
@@ -125,47 +132,23 @@ namespace Music.Controllers {
 
                 //    WriteContent(_lyricText, _path);//写入文件
                 //}
-                /**
-                 * 
-                 *
-                 *[ti:忽然]
-                  [ar:李志]
-                  [al:你好，郑州]
-                  [by:2369972023]
-                  [00:00.00]歌词千寻 www.lrcgc.com
-                  [00:00.62]忽然 - 李志
-                  [00:02.44]忽然就流出泪来
-                  [00:05.32]忽然想要听到她的声音
-                  [00:09.37]而我却什么话都说不出来
-                  [00:14.68]是谁在温暖你
-                  [00:17.69]有谁会让我觉得
-                  [00:20.19]这夜晚还有期盼
-                  [00:23.91]我就会跟着它去远行
-                  [00:27.09]
-                  [00:39.51]可是你在哪里
-                  [00:42.68]可是明天醒来的第一脸阳光
-                  [00:47.01]是否 会像梦里一样明亮
-                  [00:52.04]幻想朝西的生活
-                  [00:55.17]幻想着你被害怕定格的角落
-                  [00:59.45]最后 我一个人越走越孤单
-                  [01:04.58]幻想朝西的生活
-                  [01:07.62]幻想着你被灯光伤感了寂寞
-                  [01:11.84]最后 你一个人越走越孤单
-                  [01:17.05]害怕朝西的生活
-                  [01:20.08]害怕着你被灯光伤感了寂寞
-                  [01:24.41]最后 我们就越走越孤单
-                  [01:29.86]lrc_by:喏小七 QQ_2369972023
-                  
-                  找歌词，上歌词千寻 www.lrcgc.com。支持歌词找歌名，LRC歌词免费下载。
-                 * 
-                 * **/
+
+                #endregion "下载歌词 已下载"
+
+
+
+                var LrcSources = GetLrcFilesInfo(Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", "lyric", "res"));
+                //匹配歌词
+
+                var findLrc = LrcSources.Where(x => x.name.Contains(songName)).FirstOrDefault();
+
                 fileInfoModels.Add(new SourceModel {
                     count = fileinfos.Length,//总数
-                    name = fileinfos[i].Name,
+                    //name = fileinfos[i].Name,
+                    name = songName,
                     author = "李志",
-                    cover = "https://2019334.xyz/share/cover/1.jpg",//后期动态更换专辑图片
+                    cover = "https://2019334.xyz/share/cover/2.jpg",//后期动态更换专辑图片
                     src = @"../love/" + fileinfos[i].Name,
-                    //lyric = "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc?t=" + count++.ToString()
                     lyric = "http://192.168.2.6:2333/content/temp/res/意味-李志.lrc?t=" + count++.ToString()
                 });
             }
