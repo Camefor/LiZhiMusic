@@ -77,8 +77,21 @@ namespace Music.Controllers {
             List<SourceModel> fileInfoModels = new List<SourceModel>();
             int count = 0;
 
-            var lyricUrls = GetLyricUrls();
+
+            List<LyricUrlModel> lyricUrls = new List<LyricUrlModel>();
+
             //考虑把歌词地址持久化 避免每次去请求
+            var _saveUrlPath = Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", @$"lyricUrls.json");
+            if (System.IO.File.Exists(_saveUrlPath)) {
+                string readText = System.IO.File.ReadAllText(_saveUrlPath);
+                //已经存在
+                lyricUrls = JsonSerializer.Deserialize<List<LyricUrlModel>>(readText);
+            } else {
+                //不存在 请求 并保存
+                lyricUrls = GetLyricUrls();
+                WriteContent(JsonSerializer.Serialize(lyricUrls), _saveUrlPath);//写入文件
+            }
+
 
             for (int i = 0; i < fileinfos.Length; i++) {
                 var songName = fileinfos[i].Name
@@ -100,18 +113,18 @@ namespace Music.Controllers {
                     var sd = "";
                 }
 
-                var _lyricUrl = string.Empty;
-                var _lyricText = string.Empty;
-                var _lyricObj = lyricUrls.Where(x => x.text.Contains(songName)).FirstOrDefault();
-                if (_lyricObj != null) {
-                    //拿到每首歌曲的歌词地址
-                    _lyricUrl = _lyricObj.url;
-                    _lyricText = DownloadLyric(_lyricUrl);
+                //拿到每首歌曲的歌词地址
+                //var _lyricUrl = string.Empty;
+                //var _lyricText = string.Empty;
+                //var _lyricObj = lyricUrls.Where(x => x.text.Contains(songName)).FirstOrDefault();
+                //if (_lyricObj != null) {
+                //    _lyricUrl = _lyricObj.url;
+                //    _lyricText = DownloadLyric(_lyricUrl);
 
-                    var _path = Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", "lyric", "res", @$"{ _lyricObj.text.Replace(@"\", "")}.lrc");
+                //    var _path = Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", "lyric", "res", @$"{ _lyricObj.text.Replace(@"\", "")}.lrc");
 
-                    WriteContent(_lyricText, _path);//写入文件
-                }
+                //    WriteContent(_lyricText, _path);//写入文件
+                //}
                 /**
                  * 
                  *
@@ -152,7 +165,8 @@ namespace Music.Controllers {
                     author = "李志",
                     cover = "https://2019334.xyz/share/cover/1.jpg",//后期动态更换专辑图片
                     src = @"../love/" + fileinfos[i].Name,
-                    lyric = "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc?t=" + count++.ToString()
+                    //lyric = "http://192.168.2.6:2333/content/temp/res/李志-忽然.lrc?t=" + count++.ToString()
+                    lyric = "http://192.168.2.6:2333/content/temp/res/意味-李志.lrc?t=" + count++.ToString()
                 });
             }
 
@@ -168,6 +182,8 @@ namespace Music.Controllers {
         }
 
 
+
+
         private static void WriteText(string content, string path) {
             // 此文本只添加到文件一次。
             if (!System.IO.File.Exists(path)) {
@@ -180,6 +196,12 @@ namespace Music.Controllers {
             System.IO.File.AppendAllText(path, content);
         }
 
+        private static void ReadText(string path) {
+            FileStream fileStream = new FileStream(path, FileMode.Open);
+            using (StreamReader reader = new StreamReader(fileStream)) {
+                string line = reader.ReadLine();
+            }
+        }
 
 
         /// <summary>
@@ -192,7 +214,6 @@ namespace Music.Controllers {
              * 常用名：逼哥, Li Zhi, 李志
              * 共收录20张专辑，203篇歌词。
              * **/
-
             Thread.Sleep(300);
             var url = "https://www.mulanci.org/lyric/s4127/";
             var sourceHtmlDom = AnalyticalContent.GetHtml(url);
