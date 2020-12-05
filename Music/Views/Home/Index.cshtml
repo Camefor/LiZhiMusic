@@ -1,6 +1,8 @@
 ﻿@{
-    ViewData["Title"] = "B哥";
+    ViewData["Title"] = "";
 }
+<script src="~/skplayer/dist/skPlayer.min.js?v=@DateTime.Now.Millisecond"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 
 <style>
     body {
@@ -58,11 +60,6 @@
 </style>
 
 
-
-
-<script src="~/skplayer/dist/skPlayer.min.js?v=@DateTime.Now.Millisecond"></script>
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lyric/lyric.js?v=@DateTime.Now.Millisecond"></script>
 
 
 <script>
@@ -156,7 +153,12 @@
         <ul id="lyricContainer"></ul>
     </div>
 </div>
-
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2020 -
+        <span>网页是抄的:<a target="_blank" href="https://2019334.xyz/">334player</a></span>
+    </div>
+</footer>
 
 
 

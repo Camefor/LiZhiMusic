@@ -62,7 +62,7 @@ namespace Music.Controllers {
             for (int i = 0; i < fileinfos.Length; i++) {
                 lrcSource.Add(new SourceModel {
                     name = fileinfos[i].Name.Split('.')[0],
-                    lyric = serverUrl + "/lyric/res/" + fileinfos[i].Name,
+                    lyric = serverUrl + "/lyric/res/" + fileinfos[i].Name+"?v="+DateTime.Now.Ticks,
                 });
             }
             return lrcSource;

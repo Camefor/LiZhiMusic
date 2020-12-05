@@ -1,9 +1,8 @@
-﻿@model List<FileInfoModel>
-@{
+﻿@{
     ViewData["Title"] = "Album";
 }
+<script src="~/skplayer/dist/skPlayer.min.js?v=@DateTime.Now.Millisecond"></script>
 
-<script src="~/skplayer/dist/skPlayer.min.js"></script>
 <div id="skPlayer">
 
 
@@ -63,6 +62,14 @@
     </p>
 
 </div>
+
+<footer class="border-top footer text-muted">
+    <div class="container">
+        &copy; 2020 -
+        - <a asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+        <span>网页是抄的2:<a asp-area="" asp-controller="Home" asp-action="Album">334player</a></span>
+    </div>
+</footer>
 <script>
 
     let songList1 = [
@@ -120,7 +127,7 @@
                 music: {
                     type: 'file',
                     //必需项,自配置文件方式指定填'file'
-                    source: songList+'1'
+                    source: songList + '1'
                 }
             })
         } if (type === 2) {
