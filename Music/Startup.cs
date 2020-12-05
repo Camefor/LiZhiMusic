@@ -35,15 +35,29 @@ namespace Music {
             var provider = new FileExtensionContentTypeProvider();
 
             provider.Mappings[".flac"] = "audio/mpeg";
-            provider.Mappings[".lrc"] = "text/plain";
+            provider.Mappings[".lrc"] = "application/octet-stream";
             provider.Mappings[".mp3"] = "audio/mpeg";
             provider.Mappings[".ico"] = "image/x-icon";
 
+
+
+            var provider2 = new FileExtensionContentTypeProvider();
+
+            provider2.Mappings[".flac"] = "audio/mpeg";
+            provider2.Mappings[".lrc"] = "application/octet-stream";
+            provider2.Mappings[".mp3"] = "audio/mpeg";
+            provider2.Mappings[".ico"] = "image/x-icon";
             app.UseStaticFiles();
             app.UseStaticFiles(new StaticFileOptions { 
                 FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath,"love")),
                 RequestPath = "/love",
                 ContentTypeProvider = provider
+            });
+
+            app.UseStaticFiles(new StaticFileOptions {
+                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "lyric")),
+                RequestPath = "/lyric",
+                ContentTypeProvider = provider2
             });
 
             app.UseRouting();

@@ -144,12 +144,14 @@ namespace Music.Controllers {
 
                 fileInfoModels.Add(new SourceModel {
                     count = fileinfos.Length,//总数
-                    //name = fileinfos[i].Name,
-                    name = songName,
+                    name = fileinfos[i].Name,
+                    //name = songName,
                     author = "李志",
                     cover = "https://2019334.xyz/share/cover/2.jpg",//后期动态更换专辑图片
                     src = @"../love/" + fileinfos[i].Name,
-                    lyric = findLrc.lyric
+                    //lyric = findLrc?.lyric
+                    lyric = "https://www.camefor.top/lyric/res/%E6%84%8F%E5%91%B3%20-%20%E6%9D%8E%E5%BF%97.lrc"
+
                 });
             }
 
