@@ -5,7 +5,6 @@
 (function ($) {
 
     window.MusicPlayer = function (obj) {
-        console.log('enter player');
         this.lrcPath = obj.lyric;
         this.lrcContainer = $(obj.container);
         this.player = $(obj.audio);
@@ -51,7 +50,7 @@
     }
 
     MusicPlayer.prototype.lrcSuccess = function (lyric) {
-        console.log('lrcSuccess');
+        console.log('歌词加载成功');
         this.lyric = lyric;
         this.lrcContainer.html('');
         for (var x in lyric) {
@@ -59,41 +58,12 @@
         }
         var that = this, nt = 0;
 
-
-        //this.player.ontimeupdate = function () {
-        //    if (that.paused) return;
-        //    var t = Math.floor(that.player[0].currentTime);
-        //    console.log(that.player[0].currentTime);
-        //    console.log(t);
-        //    if (nt == t) return;
-        //    nt = t;
-        //    //改变歌词样式 颜色 
-        //    console.log(that.lyric[t]);
-        //    if (typeof that.lyric[t] != 'undefined') {
-        //        var $nl = that.lrcContainer.find('li').removeClass('active').filter('[data-time="' + t + '"]').addClass('active');
-        //        if (that.lyricChange) that.lyricChange({
-        //            time: t,
-        //            target: $nl
-        //        });
-        //    }
-        //};
-
-
         let musicDom = document.getElementsByTagName('audio')[0];//获取Audio的DOM节点
         console.info('get musicDom');
         console.info(musicDom);
         musicDom.addEventListener("timeupdate", function () {//监听音频播放的实时时间事件
-            console.info('enter timeupdate event');
-
-            //let timeDisplay;
-            ////用秒数来显示当前播放进度
-            //timeDisplay = Math.floor(musicDom.currentTime);//获取实时时间
-            //// console.log(timeDisplay)
-
             if (that.paused) return;
             var t = Math.floor(that.player[0].currentTime);
-            console.log(that.player[0].currentTime);
-            console.log(t);
             if (nt == t) return;
             nt = t;
             //改变歌词样式 颜色 
@@ -105,25 +75,6 @@
                     target: $nl
                 });
             }
-        });
-
-
-        this.player.on('timeupdate', function (e) {
-            //if (that.paused) return;
-            //var t = Math.floor(that.player[0].currentTime);
-            //console.log(that.player[0].currentTime);
-            //console.log(t);
-            //if (nt == t) return;
-            //nt = t;
-            ////改变歌词样式 颜色 
-            //console.log(that.lyric[t]);
-            //if (typeof that.lyric[t] != 'undefined') {
-            //    var $nl = that.lrcContainer.find('li').removeClass('active').filter('[data-time="' + t + '"]').addClass('active');
-            //    if (that.lyricChange) that.lyricChange({
-            //        time: t,
-            //        target: $nl
-            //    });
-            //}
         });
     }
 

@@ -9,12 +9,12 @@
     }
 
     #main {
-        margin: 40px auto;
-        /*width: 300px;*/
-        border: 1px solid #D6D6D6;
-        background-color: #FFFFFF;
-        border-radius: 3px;
-        box-shadow: 0 0 2px 1px #797979;
+        margin: 40px /*auto*/;
+        width: 300px;
+        /*border: 1px solid #D6D6D6;*/
+        /*background-color: #FFFFFF;*/
+        /*border-radius: 3px;*/
+        /*box-shadow: 0 0 2px 1px #797979;*/
     }
 
     /* audio {
@@ -56,10 +56,13 @@
             height: 26px;
         }
 </style>
-<script src="~/skplayer/dist/skPlayer.min.js"></script>
-@*<script src="~/skplayer/src/skPlayer.js"></script>*@
+
+
+
+
+<script src="~/skplayer/dist/skPlayer.min.js?v=@DateTime.Now.Millisecond"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-<script src="~/lyric/lyric.js"></script>
+<script src="~/lyric/lyric.js?v=@DateTime.Now.Millisecond"></script>
 
 
 <script>
@@ -105,7 +108,7 @@
             success: function (data) {
                 allsong = data;
                 player = new skPlayer({
-                    autoplay: true,
+                    //autoplay: true,
                     //可选项,自动播放,默认为false,true/false
                     listshow: true,
                     //可选项配置同上
@@ -134,8 +137,6 @@
 
 <div class="pure-menu custom-restricted-width">
     <span class="pure-menu-heading">俺喜欢的 <span id="lovecount"></span> </span>
-    <ul id="myul" class="pure-menu-list">
-    </ul>
 </div>
 
 <div id="skPlayer">
@@ -151,7 +152,6 @@
 
 
 <div id="main">
-    @*<audio src="~/love/01. 李志 - 意味.flac" loop controls autoplay></audio>*@
     <div id="lyric">
         <ul id="lyricContainer"></ul>
     </div>

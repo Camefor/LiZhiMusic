@@ -37,20 +37,10 @@ namespace Music.Controllers {
             return View();
         }
 
-        public void WriteLog() {
-            var p = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "love");
-
-        }
-
         [HttpGet]
         public JsonResult Love() {
             var path = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "love");
             var sourceModels = GetSourceList(path);
-            for (int i = 0; i < sourceModels.Count; i++) {
-
-            }
-
-
             return Json(sourceModels);
         }
 
@@ -63,14 +53,18 @@ namespace Music.Controllers {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
             var fileinfos = dir.GetFiles();
             List<SourceModel> lrcSource = new List<SourceModel>();
+            var serverUrl = "";
+            if (HttpContext.Request.IsHttps) {
+                serverUrl = "https://" + HttpContext.Request.Host.Value;
+            } else {
+                serverUrl = "http://" + HttpContext.Request.Host.Value;
+            }
             for (int i = 0; i < fileinfos.Length; i++) {
                 lrcSource.Add(new SourceModel {
                     name = fileinfos[i].Name.Split('.')[0],
-                    lyric ="https://"+ HttpContext.Request.Host.Value + "/lyric/res/" + fileinfos[i].Name,
+                    lyric = serverUrl + "/lyric/res/" + fileinfos[i].Name,
                 });
             }
-
-            //var res = JsonSerializer.Serialize(fileInfoModels);
             return lrcSource;
         }
 
@@ -79,18 +73,11 @@ namespace Music.Controllers {
         /// </summary>
         /// <param name="srcPath"></param>
         /// <returns></returns>
-        private  List<SourceModel> GetSourceList(string srcPath) {
+        private List<SourceModel> GetSourceList(string srcPath) {
             DirectoryInfo dir = new DirectoryInfo(srcPath);
             var fileinfos = dir.GetFiles();  //获取目录下（不包含子目录）的文件和子目录
             List<SourceModel> fileInfoModels = new List<SourceModel>();
-            int count = 0;
-
-
-
-
             for (int i = 0; i < fileinfos.Length; i++) {
-
-
                 var songName = fileinfos[i].Name
                     .Trim()
                     .Replace("李志", "")
@@ -106,7 +93,6 @@ namespace Music.Controllers {
                 songName = Regex.Replace(songName, @"\（.*\）", "");//过滤{}｛｝
                 songName = Regex.Replace(songName.Replace("（", "(").Replace("）", ")"), @"\([^\(]*\)", "");
                 songName = Regex.Replace(songName, @"\d", "");
-
 
                 #region "下载歌词 已下载"
                 //List<LyricUrlModel> lyricUrls = new List<LyricUrlModel>();
@@ -136,11 +122,8 @@ namespace Music.Controllers {
 
                 #endregion "下载歌词 已下载"
 
-
-
                 var LrcSources = GetLrcFilesInfo(Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", "lyric", "res"));
                 //匹配歌词
-
                 var findLrc = LrcSources.Where(x => x.name.Contains(songName)).FirstOrDefault();
 
                 fileInfoModels.Add(new SourceModel {
@@ -151,15 +134,13 @@ namespace Music.Controllers {
                     cover = "https://2019334.xyz/share/cover/2.jpg",//后期动态更换专辑图片
                     src = @"../love/" + fileinfos[i].Name,
                     lyric = findLrc?.lyric
-                    //lyric = "https://www.camefor.top/lyric/res/%E6%84%8F%E5%91%B3%20-%20%E6%9D%8E%E5%BF%97.lrc"
-
                 });
             }
 
             return fileInfoModels;
         }
 
-        private  void WriteContent(string content, string path) {
+        private void WriteContent(string content, string path) {
             if (!System.IO.File.Exists(path)) {
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, append: true)) {
                     file.WriteLine(content);
@@ -170,7 +151,7 @@ namespace Music.Controllers {
 
 
 
-        private  void WriteText(string content, string path) {
+        private void WriteText(string content, string path) {
             // 此文本只添加到文件一次。
             if (!System.IO.File.Exists(path)) {
                 // 创建要写入的文件。
@@ -182,7 +163,7 @@ namespace Music.Controllers {
             System.IO.File.AppendAllText(path, content);
         }
 
-        private  void ReadText(string path) {
+        private void ReadText(string path) {
             FileStream fileStream = new FileStream(path, FileMode.Open);
             using (StreamReader reader = new StreamReader(fileStream)) {
                 string line = reader.ReadLine();
@@ -194,7 +175,7 @@ namespace Music.Controllers {
         /// 获取所有歌词地址
         /// </summary>
         /// <returns></returns>
-        private  List<LyricUrlModel> GetLyricUrls() {
+        private List<LyricUrlModel> GetLyricUrls() {
             /**
              * 李志( Li Zhi )
              * 常用名：逼哥, Li Zhi, 李志
