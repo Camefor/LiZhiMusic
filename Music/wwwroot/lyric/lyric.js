@@ -59,15 +59,12 @@
         var that = this, nt = 0;
 
         let musicDom = document.getElementsByTagName('audio')[0];//获取Audio的DOM节点
-        console.info('get musicDom');
-        console.info(musicDom);
         musicDom.addEventListener("timeupdate", function () {//监听音频播放的实时时间事件
             if (that.paused) return;
             var t = Math.floor(that.player[0].currentTime);
             if (nt == t) return;
             nt = t;
             //改变歌词样式 颜色 
-            console.log(that.lyric[t]);
             if (typeof that.lyric[t] != 'undefined') {
                 var $nl = that.lrcContainer.find('li').removeClass('active').filter('[data-time="' + t + '"]').addClass('active');
                 if (that.lyricChange) that.lyricChange({
