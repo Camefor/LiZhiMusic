@@ -22,26 +22,36 @@ namespace Music.Controllers {
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _hostEnvironment;
         private static IWebHostEnvironment HostEnvironment;
+
         static HtmlParser htmlParser = new HtmlParser();
-        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment environment) {
+        public HomeController(ILogger<HomeController> logger , IWebHostEnvironment environment) {
             _logger = logger;
             _hostEnvironment = environment;
             HostEnvironment = environment;
         }
 
-
-        public IActionResult Index() {
-            _logger.LogWarning("haha");
-            List<SourceModel> sourceModels = new List<SourceModel>();
-            SourceModel sourceModel = new SourceModel();
+        public IActionResult Index(int code = 0) {
+            ViewBag.code = code;
             return View();
         }
 
+        //public IActionResult Index() {
+        //    return View();
+        //}
+
         [HttpGet]
-        public JsonResult Love() {
-            var path = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "love");
+        public JsonResult Love(int code = 0) {
+            var path = Path.Combine(_hostEnvironment.ContentRootPath , "wwwroot" , "love");
             var sourceModels = GetSourceList(path);
-            return Json(sourceModels);
+            if (code == 0) {
+                return Json(sourceModels);
+            } else {
+                if (sourceModels.Count > 0) {
+                    return Json(sourceModels[code]);
+                } else {
+                    return Json(null);
+                }
+            }
         }
 
         /// <summary>
@@ -61,8 +71,8 @@ namespace Music.Controllers {
             }
             for (int i = 0; i < fileinfos.Length; i++) {
                 lrcSource.Add(new SourceModel {
-                    name = fileinfos[i].Name.Split('.')[0],
-                    lyric = serverUrl + "/lyric/res/" + fileinfos[i].Name+"?v="+DateTime.Now.Ticks,
+                    name = fileinfos[i].Name.Split('.')[0] ,
+                    lyric = serverUrl + "/lyric/res/" + fileinfos[i].Name + "?v=" + DateTime.Now.Ticks ,
                 });
             }
             return lrcSource;
@@ -80,19 +90,19 @@ namespace Music.Controllers {
             for (int i = 0; i < fileinfos.Length; i++) {
                 var songName = fileinfos[i].Name
                     .Trim()
-                    .Replace("李志", "")
-                    .Replace("-", "")
-                    .Replace(".", "")
-                    .Replace("mp3", "")
-                    .Replace("flac", "")
-                    .Replace(" ", "")
-                    .Replace("（", "(").Replace("）", ")")
-                    .Replace("   ", "");
-                songName = Regex.Replace(songName, @"\{.*\}", "");//过滤{}｛｝
-                songName = Regex.Replace(songName, @"\(.*\)", "");//过滤{}｛｝
-                songName = Regex.Replace(songName, @"\（.*\）", "");//过滤{}｛｝
-                songName = Regex.Replace(songName.Replace("（", "(").Replace("）", ")"), @"\([^\(]*\)", "");
-                songName = Regex.Replace(songName, @"\d", "");
+                    .Replace("李志" , "")
+                    .Replace("-" , "")
+                    .Replace("." , "")
+                    .Replace("mp3" , "")
+                    .Replace("flac" , "")
+                    .Replace(" " , "")
+                    .Replace("（" , "(").Replace("）" , ")")
+                    .Replace("   " , "");
+                songName = Regex.Replace(songName , @"\{.*\}" , "");//过滤{}｛｝
+                songName = Regex.Replace(songName , @"\(.*\)" , "");//过滤{}｛｝
+                songName = Regex.Replace(songName , @"\（.*\）" , "");//过滤{}｛｝
+                songName = Regex.Replace(songName.Replace("（" , "(").Replace("）" , ")") , @"\([^\(]*\)" , "");
+                songName = Regex.Replace(songName , @"\d" , "");
 
                 #region "下载歌词 已下载"
                 //List<LyricUrlModel> lyricUrls = new List<LyricUrlModel>();
@@ -122,18 +132,18 @@ namespace Music.Controllers {
 
                 #endregion "下载歌词 已下载"
 
-                
-                var LrcSources = GetLrcFilesInfo(Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", "lyric", "res"));
+
+                var LrcSources = GetLrcFilesInfo(Path.Combine(HostEnvironment.ContentRootPath , "wwwroot" , "lyric" , "res"));
                 //匹配歌词
                 var findLrc = LrcSources.Where(x => x.name.Contains(songName)).FirstOrDefault();
 
                 fileInfoModels.Add(new SourceModel {
-                    count = fileinfos.Length,//总数
-                    name = fileinfos[i].Name,
+                    count = fileinfos.Length ,//总数
+                    name = fileinfos[i].Name ,
                     //name = songName,
-                    author = "李志",
-                    cover = "https://2019334.xyz/share/cover/2.jpg",//后期动态更换专辑图片
-                    src = @"../love/" + fileinfos[i].Name,
+                    author = "李志" ,
+                    cover = "https://2019334.xyz/share/cover/2.jpg" ,//后期动态更换专辑图片
+                    src = @"../love/" + fileinfos[i].Name ,
                     lyric = findLrc?.lyric
                 });
             }
@@ -141,9 +151,9 @@ namespace Music.Controllers {
             return fileInfoModels;
         }
 
-        private void WriteContent(string content, string path) {
+        private void WriteContent(string content , string path) {
             if (!System.IO.File.Exists(path)) {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(path, append: true)) {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(path , append: true)) {
                     file.WriteLine(content);
                 }
             }
@@ -152,20 +162,20 @@ namespace Music.Controllers {
 
 
 
-        private void WriteText(string content, string path) {
+        private void WriteText(string content , string path) {
             // 此文本只添加到文件一次。
             if (!System.IO.File.Exists(path)) {
                 // 创建要写入的文件。
-                System.IO.File.WriteAllText(path, content);
-                System.IO.File.AppendAllText(path, "\r\n");
+                System.IO.File.WriteAllText(path , content);
+                System.IO.File.AppendAllText(path , "\r\n");
             }
             // 这个文本总是被添加，使文件随着时间的推移而变长
             // 如果它没有被删除。
-            System.IO.File.AppendAllText(path, content);
+            System.IO.File.AppendAllText(path , content);
         }
 
         private void ReadText(string path) {
-            FileStream fileStream = new FileStream(path, FileMode.Open);
+            FileStream fileStream = new FileStream(path , FileMode.Open);
             using (StreamReader reader = new StreamReader(fileStream)) {
                 string line = reader.ReadLine();
             }
@@ -192,20 +202,20 @@ namespace Music.Controllers {
 
                 var songName = item.InnerHtml
                    .Trim()
-                   .Replace("李志", "")
-                   .Replace("-", "")
-                   .Replace(".", "")
-                   .Replace(" ", "")
-                   .Replace("(2014 Live i / O 版)", "")
-                   .Replace("   ", "");
-                songName = Regex.Replace(songName, @"\{.*\}", "");//过滤{}｛｝
-                songName = Regex.Replace(songName, @"\（.*\）", "");//过滤{}｛｝
-                songName = Regex.Replace(songName, @"\(.*\)", "");//过滤{}｛｝
-                songName = Regex.Replace(songName, @"\d", "");
+                   .Replace("李志" , "")
+                   .Replace("-" , "")
+                   .Replace("." , "")
+                   .Replace(" " , "")
+                   .Replace("(2014 Live i / O 版)" , "")
+                   .Replace("   " , "");
+                songName = Regex.Replace(songName , @"\{.*\}" , "");//过滤{}｛｝
+                songName = Regex.Replace(songName , @"\（.*\）" , "");//过滤{}｛｝
+                songName = Regex.Replace(songName , @"\(.*\)" , "");//过滤{}｛｝
+                songName = Regex.Replace(songName , @"\d" , "");
 
 
                 lyricUrlModels.Add(new LyricUrlModel {
-                    text = songName,
+                    text = songName ,
                     url = "https://www.mulanci.org/" + item.GetAttribute("href")
                 });
             }
@@ -224,10 +234,10 @@ namespace Music.Controllers {
             var textItems = dom.QuerySelectorAll("div#lyric-content");//元素选择器 //pb-1
             foreach (var item in textItems) {
                 var text = item.InnerHtml;
-                var t1 = text.Replace("<br>", "\r\n");
+                var t1 = text.Replace("<br>" , "\r\n");
                 var sd = t1.IndexOf("<div");
-                res = t1.Substring(0, sd - 1);
-                res = res.Replace("        作词：李志", "作词：李志");
+                res = t1.Substring(0 , sd - 1);
+                res = res.Replace("        作词：李志" , "作词：李志");
             }
             return res;
         }
@@ -244,10 +254,10 @@ namespace Music.Controllers {
             List<FileInfoModel> fileInfoModels = new List<FileInfoModel>();
             foreach (FileInfo i in fileinfos) {
                 fileInfoModels.Add(new FileInfoModel {
-                    Name = i.Name,
-                    FullName = "./" + i.Name + i.Extension,
-                    MB = GetMB(Convert.ToDouble(i.Length)),
-                    CreationTime = i.CreationTime,
+                    Name = i.Name ,
+                    FullName = "./" + i.Name + i.Extension ,
+                    MB = GetMB(Convert.ToDouble(i.Length)) ,
+                    CreationTime = i.CreationTime ,
                     LastAccessTime = i.LastAccessTime
                 });
             }
@@ -256,7 +266,7 @@ namespace Music.Controllers {
         }
 
         private static string GetMB(double size) {
-            String[] units = new String[] { "B", "KB", "MB", "GB", "TB", "PB" };
+            String[] units = new String[] { "B" , "KB" , "MB" , "GB" , "TB" , "PB" };
             double mod = 1024.0;
             int i = 0;
             while (size >= mod) {
@@ -274,7 +284,7 @@ namespace Music.Controllers {
             return View();
         }
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+        [ResponseCache(Duration = 0 , Location = ResponseCacheLocation.None , NoStore = true)]
         public IActionResult Error() {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }

@@ -115,10 +115,11 @@
 <script>
     var allsong = [];
     var alllyric = [];
-
+    var code = '@ViewBag.code'
 
     $(function () {
-        getMyLove();
+        console.log(code);
+        getMyLove(code);
     });
 
     let songList1 = [
@@ -146,14 +147,27 @@
     //http://www.chengfeilong.com/skPlayer/
     var player;
 
-    function getMyLove() {
+    function getMyLove(acode) {
         $.ajax({
             type: "get",
-            url: "/Home/Love",
+            url: "/Home/Love?code=" + acode,
             async: false,
             dataType: "json",
             success: function (data) {
-                allsong = data;
+                
+                var finallyData = [];
+                if (data instanceof Array) {
+                    //是数组
+                    allsong = data;
+                    finallyData = data;
+                } else {
+                    allsong = [];
+                    allsong.push(data);
+                    finallyData.push(data);
+                }
+                console.log(data);
+
+
                 player = new skPlayer({
                     //autoplay: true,
                     //可选项,自动播放,默认为false,true/false
@@ -165,12 +179,11 @@
                         //必需项,自配置文件方式指定填'file'
                         source:
                             //必需项,音乐文件数组
-                            data
+                            finallyData
                     }
                 });
 
-
-                $('#lovecount').text('共' + data[0].count + '首');
+                //$('#lovecount').text('共' + data[0].count + '首');
             },
             error: function (errorMsg) {
                 alert("请求失败");
@@ -182,9 +195,9 @@
 
 
 
-<div class="pure-menu custom-restricted-width">
+@*<div class="pure-menu custom-restricted-width">
     <span class="pure-menu-heading">俺喜欢的 <span id="lovecount"></span> </span>
-</div>
+</div>*@
 
 <div id="skPlayer">
 
