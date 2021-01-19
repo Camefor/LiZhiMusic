@@ -122,6 +122,7 @@ namespace Music.Controllers {
 
                 #endregion "下载歌词 已下载"
 
+                
                 var LrcSources = GetLrcFilesInfo(Path.Combine(HostEnvironment.ContentRootPath, "wwwroot", "lyric", "res"));
                 //匹配歌词
                 var findLrc = LrcSources.Where(x => x.name.Contains(songName)).FirstOrDefault();
