@@ -36,6 +36,7 @@ namespace Music {
 
             provider.Mappings[".flac"] = "audio/mpeg";
             provider.Mappings[".lrc"] = "application/octet-stream";
+            provider.Mappings[".m3u8"] = "application/octet-stream";
             provider.Mappings[".mp3"] = "audio/mpeg";
             provider.Mappings[".ico"] = "image/x-icon";
 
@@ -48,17 +49,29 @@ namespace Music {
             provider2.Mappings[".mp3"] = "audio/mpeg";
             provider2.Mappings[".ico"] = "image/x-icon";
             app.UseStaticFiles();
-            app.UseStaticFiles(new StaticFileOptions { 
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath,"love")),
-                RequestPath = "/love",
-                ContentTypeProvider = provider
-            });
 
             app.UseStaticFiles(new StaticFileOptions {
-                FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "lyric")),
-                RequestPath = "/lyric",
-                ContentTypeProvider = provider2
+                //FileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory()),
+                //设置不限制content-type 该设置可以下载所有类型的文件，但是不建议这么设置，因为不安全
+                ServeUnknownFileTypes = true
+
             });
+            //app.UseStaticFiles(new StaticFileOptions { 
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath,"love")),
+            //    RequestPath = "/love",
+            //    ContentTypeProvider = provider
+            //});
+
+            //app.UseStaticFiles(new StaticFileOptions {
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath, "lyric")),
+            //    RequestPath = "/lyric",
+            //    ContentTypeProvider = provider2
+            //});
+            //app.UseStaticFiles(new StaticFileOptions {
+            //    FileProvider = new PhysicalFileProvider(Path.Combine(env.WebRootPath , "love")) ,
+            //    RequestPath = "/video" ,
+            //    ContentTypeProvider = provider
+            //});
 
             app.UseRouting();
 
