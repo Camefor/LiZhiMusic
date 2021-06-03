@@ -1,5 +1,5 @@
 //SKPlayer
-console.log('%cSKPlayer 3.0.8', 'color:#D94240');
+console.log('%cSKPlayer 3.0.8', 'color:#ccc');
 
 require('./skPlayer.scss');
 
