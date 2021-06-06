@@ -17,6 +17,19 @@ using System.Net;
 using System.Text.RegularExpressions;
 using System.Threading;
 
+/// <summary>
+/// 查找进程 杀掉进程
+/// 
+/// 重启项目
+/// https://blog.csdn.net/andy572633/article/details/7211546
+/// 
+/// 部署项目
+///  nohup dotnet Music.dll --urls="http://*"
+/// https://www.cnblogs.com/jayjiang/p/12610588.html
+/// 
+/// dotnet Demo.Net.Core.dll --urls="http://*:8081;http://*:8082"
+/// </summary>
+
 namespace Music.Controllers {
     public class HomeController : Controller {
         private readonly ILogger<HomeController> _logger;
