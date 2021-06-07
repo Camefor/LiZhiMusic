@@ -42,9 +42,15 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/hls.js/1.0.3-0.canary.7249/hls.min.js"></script>
     <script src="~/lib/helloweba_dplayer/DPlayer.min.js"></script>
     <script>
+        //https://www.cnblogs.com/fallTakeMan/p/12099242.html
         const dp = new DPlayer({
             container: document.getElementById('dplayer'),
-            screenshot: false,
+            theme: '#FADFA3', // 主题
+            loop: true, // 循环播放
+            lang: 'zh-cn', // 语言
+            screenshot: true, // 截图
+            hotkey: true, // 热键
+            preload: 'auto', // 预加载
             video: {
                 url: '@Model?.url',
                 type: 'hls',

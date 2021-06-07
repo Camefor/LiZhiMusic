@@ -19,6 +19,9 @@ using System.Threading;
 
 /// <summary>
 /// 查找进程 杀掉进程
+///  pgrep Music.dll
+///  ps -ef | grep firefox
+///  kill -s 9 {id }
 /// 
 /// 重启项目
 /// https://blog.csdn.net/andy572633/article/details/7211546

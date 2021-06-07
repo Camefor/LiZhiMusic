@@ -54,6 +54,7 @@ namespace Music.Controllers
                     //key是路径的一部分 子目录
                     var path = Path.Combine(_hostEnvironment.ContentRootPath, "wwwroot", "video", key);
                     var file = Path.Combine(path, key + ".json");
+                    //有json文件就使用这个
                     if (System.IO.File.Exists(file))
                     {
                         //我把歌曲信息写到这里面了
