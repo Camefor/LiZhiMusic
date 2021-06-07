@@ -18,9 +18,15 @@ namespace Music.Controllers
     /// 第二步：
     /// 将mp4格式转换为ts格式
     /// ffmpeg -y -i 本地视频.mp4 -vcodec copy -acodec copy -vbsf h264_mp4toannexb 转换视频.ts
-    /// 第三步:
+    /// 
+    /// 第三步 （-segment_time 1 指定间隔时长）:
     /// 将ts文件进行切片 后期要根据视频总大小 动态调整切片 时长  文件大小  要保证在很短时间内完成文件加载
-    /// ffmpeg -i {本地视频.ts} -c copy -map 0 -f segment -segment_list {视频索引文件.m3u8} -segment_time 5 {前缀}-%03d.ts
+    /// ffmpeg -i {本地视频.ts} -c copy -map 0 -f segment -segment_list {视频索引文件.m3u8} -segment_time 1 {前缀}-%03d.ts
+    /// ffmpeg -i huran.ts -c copy -map 0 -f segment -segment_list huran.m3u8 -segment_time 1 huran-%03d.ts
+    /// 
+    /// 
+    /// 太慢了：
+    /// ffmpeg -i 2.mp4 -hls_time 1 -f hls 2.m3u8
     /// </summary>
     public class VideoController : Controller
     {
