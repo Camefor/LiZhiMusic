@@ -20,7 +20,7 @@ using System.Threading;
 /// <summary>
 /// 查找进程 杀掉进程
 ///  pgrep Music.dll
-///  ps -ef | grep firefox
+///  ps -ef | grep Music
 ///  kill -s 9 {id }
 /// 
 /// 重启项目
@@ -28,6 +28,7 @@ using System.Threading;
 /// 
 /// 部署项目
 ///  nohup dotnet Music.dll --urls="http://*"
+///    dotnet Music.dll --urls="http://*:8888"
 /// https://www.cnblogs.com/jayjiang/p/12610588.html
 /// 
 /// dotnet Demo.Net.Core.dll --urls="http://*:8081;http://*:8082"

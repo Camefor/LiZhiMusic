@@ -1,10 +1,12 @@
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Hosting;
+using Music.Middleware;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,7 +23,23 @@ namespace Music {
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
+
+            services.AddCors(options => {
+                options.AddPolicy("CorsPolicy", builder =>
+                {
+                    builder.SetIsOriginAllowed((x) => true)
+                   .AllowAnyOrigin()
+                   .AllowAnyHeader()
+                   .AllowAnyMethod();
+                });
+
+            });
+
             services.AddControllersWithViews();
+
+
+            //services.AddCorsPolicy(Configuration);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -31,6 +49,7 @@ namespace Music {
             } else {
                 app.UseExceptionHandler("/Home/Error");
             }
+
 
             var provider = new FileExtensionContentTypeProvider();
 
@@ -74,6 +93,9 @@ namespace Music {
             //});
 
             app.UseRouting();
+
+            //app.UseCors(WebCoreExtensions.MyAllowSpecificOrigins);
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
